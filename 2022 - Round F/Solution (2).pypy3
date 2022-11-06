@@ -1,0 +1,53 @@
+def fill(n,q,g):
+  #print("N", n, "Q", q)
+  #print(g)
+  # find number of nodes at each level
+  levels = {}
+  visited = set()
+  curlevel = 0
+  queue = [1]
+
+  while len(queue) > 0:
+    #print(queue)
+    levels[curlevel] = len(queue)
+    for i in range(len(queue)):
+      visited.add(queue[i])
+      for node in g[queue[i]]:
+        if node not in visited:
+          queue.append(node)
+    queue = queue[levels[curlevel]:]
+    curlevel += 1
+
+  #print(levels)
+  count = 0
+  curlevel = 0
+  curwater = 0.0
+  for i in range(q):
+    #print(curwater)
+    curwater += 1.0 / levels[curlevel]
+    if curwater >= 1.0:
+      count += levels[curlevel]
+      #print('CURWATER', curwater, 'COUNT', count)
+      curlevel += 1
+      curwater = 0.0
+
+  return count
+
+no_test = int(input())
+
+#print("Number of tests:", no_test)
+
+for t in range(no_test):
+  n,q = map(int, input().split(" "))
+  g = {}
+  for j in range(n):
+    g[j+1] = []
+  for k in range(n-1):
+    i,j = map(int, input().split(" "))
+    g[i].append(j)
+    g[j].append(i)
+  queries = []
+  for i in range(q):
+    input()
+
+  print("Case #" + str(t+1) + ":", fill(n,q,g))
